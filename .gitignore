@@ -1,0 +1,9 @@
+﻿# This repo holds published release zips and documentation only.
+# The application source, recordings, models and profiles never belong here.
+/data/
+/models/
+/logs/
+/src/
+*.karaprofile
+_test/
+
