@@ -5,7 +5,7 @@ on your own computer.
 
 ## Installing
 
-**1. Extract the zip first.** Right-click `Kara-v1.5.zip`, choose *Extract
+**1. Extract the zip first.** Right-click `Kara-v1.51.zip`, choose *Extract
 All...*, then *Extract*. This step is not optional -- if you open Kara from
 inside the zip, Windows unpacks only that one file and nothing else works. Kara
 will tell you if this happens.
@@ -33,8 +33,10 @@ in it -- Windows opens .ps1 files in Notepad instead of running them.
 
 A fresh install uses the general speech model and is not personalised yet. Kara
 offers to record a short setup on first launch. The recordings stay on your
-machine and training runs there too. On the voice Kara was built for, this took
-word error rate from 34.7% to 4.5%.
+machine and training runs there too. On the voice Kara was built for, personalising it cut the word error rate
+from about 35% to roughly 4.5% on average. What you get depends on your own
+voice and how much you record, and Kara only ever shows you figures measured
+for you.
 
 ## Moving an existing setup to another computer
 
