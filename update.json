@@ -1,5 +1,5 @@
 {
-  "version": "1.51",
-  "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.51.zip",
-  "notes": "Clicking Kara while it is asking who is using it now brings that window forward instead of doing nothing. Measure this machine works. Accuracy figures shown are only ever your own."
+  "version": "1.52",
+  "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.52.zip",
+  "notes": "Importing a profile has its own option now, next to Export."
 }

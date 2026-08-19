@@ -5,7 +5,7 @@ on your own computer.
 
 ## Installing
 
-**1. Extract the zip first.** Right-click `Kara-v1.51.zip`, choose *Extract
+**1. Extract the zip first.** Right-click `Kara-v1.52.zip`, choose *Extract
 All...*, then *Extract*. This step is not optional -- if you open Kara from
 inside the zip, Windows unpacks only that one file and nothing else works. Kara
 will tell you if this happens.
@@ -54,6 +54,15 @@ wrong. Your recordings, pages and trained voice model are never touched.
 
 The check asks one public file which version is current. It sends nothing
 about you, and it can be switched off in Settings.
+
+## Moving to a new computer
+
+Open the profile menu (your initial, top-left). **Export profile…** writes a
+single file with your recordings, trained voice model and pages in it. On the
+new computer, install Kara and use **Import a profile…** in the same menu.
+
+That file is not encrypted and contains your voice recordings -- keep it
+somewhere private.
 
 ## Removing Kara
 
