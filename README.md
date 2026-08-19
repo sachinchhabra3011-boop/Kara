@@ -5,7 +5,12 @@ on your own computer.
 
 ## Installing
 
-**Double-click Kara.**
+**1. Extract the zip first.** Right-click `Kara-v1.0.zip`, choose *Extract
+All...*, then *Extract*. This step is not optional -- if you open Kara from
+inside the zip, Windows unpacks only that one file and nothing else works. Kara
+will tell you if this happens.
+
+**2. Open the extracted folder and double-click Kara.**
 
 That is the only thing in this folder you need to touch. The first time, it sets
 Kara up (about 2 GB, a few minutes) and then starts it. Every time after that it
