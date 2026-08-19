@@ -5,7 +5,7 @@ on your own computer.
 
 ## Installing
 
-**1. Extract the zip first.** Right-click `Kara-v1.1.zip`, choose *Extract
+**1. Extract the zip first.** Right-click `Kara-v1.2.zip`, choose *Extract
 All...*, then *Extract*. This step is not optional -- if you open Kara from
 inside the zip, Windows unpacks only that one file and nothing else works. Kara
 will tell you if this happens.
