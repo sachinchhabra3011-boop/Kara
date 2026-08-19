@@ -5,7 +5,7 @@ on your own computer.
 
 ## Installing
 
-**1. Extract the zip first.** Right-click `Kara-v1.3.zip`, choose *Extract
+**1. Extract the zip first.** Right-click `Kara-v1.4.zip`, choose *Extract
 All...*, then *Extract*. This step is not optional -- if you open Kara from
 inside the zip, Windows unpacks only that one file and nothing else works. Kara
 will tell you if this happens.
@@ -41,6 +41,16 @@ On the old machine: Settings > Backup, point it at a folder, switch on **Also
 copy the trained voice model**, and back up. On the new machine, install as
 above, point Settings > Backup at the same folder and press Restore. The profile
 records which trained model belongs to it, so the restored one is found and used.
+
+## Updating
+
+Kara checks for updates itself and offers them when one is published. You
+do not need to download it again -- accept the offer and it replaces its own
+program files, keeping the previous version so it can go back if anything is
+wrong. Your recordings, pages and trained voice model are never touched.
+
+The check asks one public file which version is current. It sends nothing
+about you, and it can be switched off in Settings.
 
 ## Removing Kara
 
