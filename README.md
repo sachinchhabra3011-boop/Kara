@@ -5,7 +5,7 @@ on your own computer.
 
 ## Installing
 
-**1. Extract the zip first.** Right-click `Kara-v1.4.zip`, choose *Extract
+**1. Extract the zip first.** Right-click `Kara-v1.5.zip`, choose *Extract
 All...*, then *Extract*. This step is not optional -- if you open Kara from
 inside the zip, Windows unpacks only that one file and nothing else works. Kara
 will tell you if this happens.
@@ -21,9 +21,10 @@ Expect it to take a while on a slow connection. It shows progress throughout.
 
 You need Windows 10 or 11. Python 3.12 is installed for you if it is missing.
 
-Kara runs on the processor if there is no NVIDIA graphics card -- a little over
-a second per sentence on a fast machine, slower on a laptop. With a card it is
-well under half a second and uses the larger model.
+Kara runs on the processor if there is no NVIDIA graphics card. Expect around
+four seconds per sentence on a fast machine and longer on a laptop; Settings
+can drop to a smaller, faster, less accurate model. With an NVIDIA card the
+same model answers in under half a second.
 
 The scripts folder is for Kara to use, not you. Do not double-click the files
 in it -- Windows opens .ps1 files in Notepad instead of running them.
