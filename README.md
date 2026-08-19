@@ -5,7 +5,7 @@ on your own computer.
 
 ## Installing
 
-**1. Extract the zip first.** Right-click `Kara-v1.0.zip`, choose *Extract
+**1. Extract the zip first.** Right-click `Kara-v1.1.zip`, choose *Extract
 All...*, then *Extract*. This step is not optional -- if you open Kara from
 inside the zip, Windows unpacks only that one file and nothing else works. Kara
 will tell you if this happens.
@@ -13,11 +13,17 @@ will tell you if this happens.
 **2. Open the extracted folder and double-click Kara.**
 
 That is the only thing in this folder you need to touch. The first time, it sets
-Kara up (about 2 GB, a few minutes) and then starts it. Every time after that it
-just starts it.
+Kara up and then starts it. Every time after that it just starts it.
 
-You need Windows 10 or 11 and Python 3.12. If Python is missing, Kara tells you
-so and gives you the link.
+Setting up downloads about **3.3 GB** on a computer without an NVIDIA graphics
+card, or about **5.9 GB** with one -- most of it PyTorch and the speech model.
+Expect it to take a while on a slow connection. It shows progress throughout.
+
+You need Windows 10 or 11. Python 3.12 is installed for you if it is missing.
+
+Kara runs on the processor if there is no NVIDIA graphics card -- a little over
+a second per sentence on a fast machine, slower on a laptop. With a card it is
+well under half a second and uses the larger model.
 
 The scripts folder is for Kara to use, not you. Do not double-click the files
 in it -- Windows opens .ps1 files in Notepad instead of running them.
