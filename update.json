@@ -1,5 +1,5 @@
 {
-  "version": "1.52",
-  "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.52.zip",
-  "notes": "Importing a profile has its own option now, next to Export."
+  "version": "1.53",
+  "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.53.zip",
+  "notes": "Kara now lists itself in Windows Settings > Apps, including on computers where it was already installed, so it can be uninstalled the normal way."
 }
