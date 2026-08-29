@@ -1,6 +1,6 @@
 ================================================================================
   KARA - TRIAGE REPORT
-  macOS port, versions 1.54 -> 1.56
+  macOS port, versions 1.54 -> 1.57
   Prepared 29 August 2026
 ================================================================================
 
@@ -331,6 +331,81 @@ HOW TO READ THIS
     NOTE  raw.githubusercontent.com caches update.json for a few minutes and
     ignores query strings, so a check made immediately after a release can see
     the previous one. It corrects itself; no action needed.
+
+--------------------------------------------------------------------------
+21. A PROFILE NAMED ".." DELETED THE WHOLE INSTALLATION   [ALSO WINDOWS]
+    *** the most dangerous thing found ***
+--------------------------------------------------------------------------
+    profiles.paths(name) builds every location a profile owns as data/<name>,
+    and delete_all_data() calls rmtree on the result. The only check on the
+    name refused the Windows-illegal characters \ / : * ? " < > | -- and ".."
+    contains none of them.
+
+    So data/.. resolves to the Kara ROOT, and deleting that profile deletes the
+    whole installation: src/, the virtual environment, the models, Kara.app,
+    and EVERY OTHER PROFILE'S RECORDINGS. "." resolves to data/ itself, which
+    is every profile at once.
+
+    This is not theoretical. It is how the working tree was destroyed while
+    testing for it -- the same unchecked join, in a cleanup line.
+
+    FIX  safe_name() refuses "." and "..", anything that is not exactly one
+         path component, control characters, and empty or whitespace names.
+         paths() additionally RESOLVES the result and refuses anything whose
+         parent is not data/, which settles symlinks too. delete_all_data()
+         re-checks for itself rather than trusting its caller. create() also
+         refuses the Windows device names (CON, PRN, NUL, COM1-9, LPT1-9) so a
+         profile made on a Mac can still be imported on Windows.
+    VERIFIED  Traversal names refused at every entry point; accented and
+         Devanagari names still work; a real delete removes only its own
+         profile and leaves the root, another profile's clips and the models
+         untouched.
+
+--------------------------------------------------------------------------
+22. FINDER'S HIDDEN FILES BECAME PAGES                (macOS only)
+--------------------------------------------------------------------------
+    macOS scatters AppleDouble twins -- ._something -- whenever a file is
+    copied to a drive or share that cannot hold an extended attribute: a USB
+    stick, a network folder, some cloud-synced directories. They carry the
+    extension of the file they shadow, so ._1788013600982.txt sits in the
+    library looking exactly like a page.
+
+    library.rebuild_index globs *.txt, so those twins became pages holding
+    binary content. It matters more since item 19, because restore now rebuilds
+    the index every time -- and restoring from a USB stick is precisely the
+    case that creates them. Windows has no equivalent file.
+
+    FIX  atomicio.is_metadata / real_files, applied wherever an operating-system
+         file could become content: the page index, the command-collision
+         corpus, the Piper voice list, the backup payload, and the document and
+         recording counts shown to the user.
+
+--------------------------------------------------------------------------
+23. macOS-SPECIFIC CHECKS THAT PASSED
+--------------------------------------------------------------------------
+    Recorded as tested rather than assumed:
+    * Accented and Devanagari profile names survive creation, listing, page
+      storage and the active-profile round trip. APFS preserves the composed
+      form; old HFS+ decomposed it, which would have broken every lookup.
+    * Two profiles differing only in case, or only in Unicode form, COLLIDE and
+      share data. True on Windows too, so consistent rather than a platform
+      bug -- but worth knowing.
+    * Subprocesses work from a path containing spaces AND parentheses, which
+      this install has: "Sachin(Temp Work)".
+    * Devanagari, emoji and smart quotes survive the clipboard and the send
+      path. pbcopy/pbpaste is a different mechanism from the Windows API.
+    * Voices whose names contain spaces and brackets -- "Eddy (English (UK))"
+      -- still synthesise, and every catalogued voice resolves by its own id.
+    * 8000 characters synthesise without hitting an argument-length limit.
+    * Shell metacharacters in dictated text -- $(whoami), backticks, semicolons
+      -- are passed as data and never executed.
+    * Desktop, Documents and Downloads are reachable for backup, and a real
+      backup into ~/Documents succeeds. These are permission-gated on macOS in
+      a way they are not on Windows.
+    * A symlink loop inside a profile does not blow up the backup payload.
+    * The voice list still parses under LANG=C.
+    * A missing output device degrades instead of crashing.
+    * Log redaction removes the profile name from paths.
 
 ================================================================================
   PART 2 - NEEDS YOU
