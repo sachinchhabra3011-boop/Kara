@@ -1,6 +1,6 @@
 ================================================================================
   KARA - TRIAGE REPORT
-  macOS port, versions 1.54 -> 1.55
+  macOS port, versions 1.54 -> 1.56
   Prepared 29 August 2026
 ================================================================================
 
@@ -287,8 +287,50 @@ HOW TO READ THIS
       double-click did nothing at all, silently. Now matches by process id.
     * The instance lock file was opened with mode "w", which truncates BEFORE
       the lock is attempted, so a losing copy wiped the winner's pid.
+    * The About page shows "terms version 1.1-draft" to users. Not a bug and
+      not mine to change, but "draft" is visible in a public release.
     * Paste key: error messages told Mac users to press "Ctrl and V".
 
+
+--------------------------------------------------------------------------
+19. THE IN-APP UPDATE LEFT HALF THE RELEASE BEHIND   [ALSO WINDOWS]
+    (found in 1.56, after 1.55 shipped)
+--------------------------------------------------------------------------
+    updates.install() replaced src/ and nothing else. That was right when a
+    release was only Python. It is not any more: 1.55 added jiwer to the
+    requirements, six prompt sets under data/prompts/, and the Kara.app bundle.
+
+    So an in-app update REPORTED SUCCESS, showed the new version in About, and
+    left the machine unable to train (no jiwer), short of setup sentences, and
+    absent from Spotlight. A half-updated install that believes it is whole is
+    worse than one that knows it is old.
+
+    Proved by running a real update against a realistic older install, not by
+    reading the code.
+
+    FIX  install() now also brings across the files a release owns -- the
+         requirements, data/prompts/setup_*.txt, scripts/, assets/, the docs
+         and Kara.app -- and, when the requirements changed, installs the new
+         dependencies into the existing virtual environment.
+    SAFETY  An ALLOW-LIST, never an exclude-list. Recordings, pages, the
+         trained voice, the profile and data/prompts/personal_setup.txt (which
+         holds the user's real names) are not in it and are not touched.
+    VERIFIED  After updating a stripped 1.54 install: version 1.55->1.56,
+         jiwer restored, 6 of 6 prompt sets, Kara.app installed -- and a
+         planted user page, anchors file and personal prompt set all survived
+         byte for byte.
+
+--------------------------------------------------------------------------
+20. UPDATE CHECKING ITSELF - CONFIRMED WORKING
+--------------------------------------------------------------------------
+    Tested end to end against the live feed, not mocked: the check reaches
+    GitHub, sees the newer version, picks the macOS build, downloads it,
+    verifies every .py parses before installing, swaps src/ atomically and
+    keeps the previous version in src.previous for rollback. All confirmed.
+
+    NOTE  raw.githubusercontent.com caches update.json for a few minutes and
+    ignores query strings, so a check made immediately after a release can see
+    the previous one. It corrects itself; no action needed.
 
 ================================================================================
   PART 2 - NEEDS YOU
