@@ -5,6 +5,18 @@ on your own computer.
 
 ## Installing
 
+Kara runs on Windows and on macOS. Pick the download for your computer.
+
+| | Download | Version |
+|---|---|---|
+| Windows 10 or 11 | `Kara-v1.53.zip` | 1.53 |
+| macOS 12 or newer | `Kara-v1.54-macos.zip` | 1.54 |
+
+The two version numbers differ only because the Mac build came later. They are
+the same Kara.
+
+### On Windows
+
 **1. Extract the zip first.** Right-click `Kara-v1.53.zip`, choose *Extract
 All...*, then *Extract*. This step is not optional -- if you open Kara from
 inside the zip, Windows unpacks only that one file and nothing else works. Kara
@@ -28,6 +40,41 @@ same model answers in under half a second.
 
 The scripts folder is for Kara to use, not you. Do not double-click the files
 in it -- Windows opens .ps1 files in Notepad instead of running them.
+
+### On a Mac
+
+**1. Unzip it.** Double-click `Kara-v1.54-macos.zip`. macOS unpacks the whole
+folder for you.
+
+**2. Move the folder somewhere it can stay** -- your Applications folder, or
+your home folder. Kara keeps your recordings and trained voice inside it, so it
+should not sit in Downloads. Moving it now also avoids a macOS security
+behaviour that runs downloaded apps from a temporary copy, which stops Kara
+finding its own files.
+
+**3. Open the folder and double-click `Kara`.**
+
+The first time, macOS refuses it: *"Kara cannot be opened because it is from an
+unidentified developer."* That happens to everything downloaded from the
+internet that Apple has not been paid to notarise, and is not a sign anything is
+wrong. **Right-click `Kara` and choose Open**, then click **Open**. You only do
+this once.
+
+Setup runs in a Terminal window so you can watch it. It downloads about **3 GB**
+and opens Kara when it finishes. Python 3.12 is installed for you if it is
+missing, into your home folder -- it never asks for your password.
+
+Afterwards, press **Cmd+Space and type `Kara`**. It is a real application, so
+Spotlight finds it and it keeps its own Dock icon.
+
+macOS will ask for two permissions, both naming Kara: the **microphone** the
+first time it listens, and **Accessibility** the first time you use *send*,
+which types your writing into another program. Kara shows a button that opens
+the right settings page. Until you grant it, send still copies to the clipboard
+and you press Cmd+V.
+
+There is no CUDA on any Mac, so Kara uses the processor engine -- on Apple
+Silicon expect a couple of seconds a sentence. `README-macOS.md` has the detail.
 
 ## Teaching it your voice
 
@@ -66,10 +113,13 @@ somewhere private.
 
 ## Removing Kara
 
-Kara is listed in Windows **Settings > Apps** -- uninstall it from there.
+On Windows, Kara is listed in **Settings > Apps** -- uninstall it from there.
 That removes the shortcuts and the entry. It asks before touching your
 recordings, your pages and your trained voice model, and keeps them unless
 you confirm, because they cannot be recreated without doing the setup again.
+
+On a Mac, drag the Kara folder to the Trash. Everything is inside it, so copy
+your recordings and trained voice model out first if you want to keep them.
 
 ## Privacy
 

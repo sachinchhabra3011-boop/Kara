@@ -1,5 +1,15 @@
 {
   "version": "1.53",
   "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.53.zip",
-  "notes": "Kara now lists itself in Windows Settings > Apps, including on computers where it was already installed, so it can be uninstalled the normal way."
+  "notes": "Kara now runs on macOS. Windows is unchanged in this release.",
+  "platforms": {
+    "windows": {
+      "version": "1.53",
+      "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.53.zip"
+    },
+    "mac": {
+      "version": "1.54",
+      "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.54-macos.zip"
+    }
+  }
 }
