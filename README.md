@@ -10,7 +10,7 @@ Kara runs on Windows and on macOS. Pick the download for your computer.
 | | Download | Version |
 |---|---|---|
 | Windows 10 or 11 | `Kara-v1.53.zip` | 1.53 |
-| macOS 12 or newer | `Kara-v1.54-macos.zip` | 1.54 |
+| macOS 12 or newer | `Kara-v1.55-macos.zip` | 1.55 |
 
 The two version numbers differ only because the Mac build came later. They are
 the same Kara.
@@ -43,7 +43,7 @@ in it -- Windows opens .ps1 files in Notepad instead of running them.
 
 ### On a Mac
 
-**1. Unzip it.** Double-click `Kara-v1.54-macos.zip`. macOS unpacks the whole
+**1. Unzip it.** Double-click `Kara-v1.55-macos.zip`. macOS unpacks the whole
 folder for you.
 
 **2. Move the folder somewhere it can stay** -- your Applications folder, or

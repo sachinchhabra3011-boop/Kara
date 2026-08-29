@@ -1,0 +1,390 @@
+================================================================================
+  KARA - TRIAGE REPORT
+  macOS port, versions 1.54 -> 1.55
+  Prepared 29 August 2026
+================================================================================
+
+HOW TO READ THIS
+  PART 1  Bugs found and FIXED. Verified on macOS unless the note says
+          otherwise. Many of these affect WINDOWS TOO - those are marked
+          [ALSO WINDOWS] and are the ones worth re-testing on your VM first.
+  PART 2  Things that need YOU: decisions, content review, or a Windows
+          machine I do not have.
+  PART 3  What was tested and how, so you can see what this covers.
+
+  Anything marked [UNVERIFIED] I could not prove on this machine. I have said
+  so rather than let it look tested.
+
+
+================================================================================
+  PART 1 - BUGS FOUND AND FIXED
+================================================================================
+
+--------------------------------------------------------------------------
+ 1. ELEVEN MODULES HAD NO ENTRY POINT - four features silently did nothing
+    [ALSO WINDOWS]  *** the most serious thing in this report ***
+--------------------------------------------------------------------------
+    Eleven files defined main() and never called it. Run as a script such a
+    file imports, defines, and exits 0 having printed nothing. That is not a
+    crash anywhere - it is a child process that "succeeds" instantly and
+    produces nothing.
+
+    Kara starts four of them as child processes, so four things were dead:
+
+      calibrate.py  "Measure this machine" - read empty output as JSON and
+                    showed "Expecting value: line 1 column 1 (char 0)"
+      finetune.py   START TRAINING DID NOTHING AT ALL
+      benchmark.py  the accuracy gate used after adaptation
+      asr.py        the isolated transcription worker
+
+    Your own scripts/setup.ps1 records that "package.py --strip" removed these
+    blocks and that record.py's had to be restored for --list-devices to list
+    anything. The same strip took the other eleven; they were never put back.
+
+    FIX  Restored "if __name__ == '__main__': main()" in all eleven.
+    NOTE If a future build runs package.py --strip, these die again the same
+         silent way. Worth removing that behaviour from the packaging script.
+
+--------------------------------------------------------------------------
+ 2. TRAINING COULD NOT RUN - missing dependency        [ALSO WINDOWS]
+--------------------------------------------------------------------------
+    With the entry point restored, finetune.py failed on
+    "ModuleNotFoundError: No module named 'jiwer'".
+
+    requirements-app.txt excludes the training stack on purpose - but gui.py
+    starts src/finetune.py when someone presses Start training. So every
+    shipped install had a training button that could not train.
+
+    FIX  Added jiwer to requirements-app.txt. It is a pure-Python wheel whose
+         only dependencies are click (already present) and rapidfuzz.
+    VERIFIED  finetune.py now loads the model and correctly reports when there
+              are no recordings yet.
+
+--------------------------------------------------------------------------
+ 3. THE SETUP PROMPT SETS WERE NEVER SHIPPED           [ALSO WINDOWS]
+--------------------------------------------------------------------------
+    SETUP_ORDER names six prompt sets. They lived under data/, which the
+    release .gitignore excludes wholesale, so they were in neither the repo nor
+    any zip - Windows included. A fresh install had NOTHING for the setup
+    wizard to offer.
+
+    FIX  All six re-authored and now shipped. See PART 2 item 2 - the content
+         needs your review.
+
+--------------------------------------------------------------------------
+ 4. SPELLING MODE COULD NOT START                      [ALSO WINDOWS]
+--------------------------------------------------------------------------
+    spelling.load_anchors raises SystemExit when data/<speaker>/anchors.json is
+    missing, and nothing anywhere created it.
+
+    FIX  profiles.create() now seeds it from ANCHOR_TEMPLATE in profiles.py -
+         kept in CODE, not data/, precisely because data/ not shipping is what
+         caused this. Existing profiles get it on their next launch.
+    VERIFIED  "kitchen apple rabbit apple" -> KARA. Slurred anchors
+              ("sugur teble" -> ST) still resolve through the fuzzy match.
+
+--------------------------------------------------------------------------
+ 5. SETUP WIZARD DEAD-ENDED AT STEP 4                  [ALSO WINDOWS]
+--------------------------------------------------------------------------
+    Three separate faults, all reachable from an empty form:
+
+    a) "Record more" on the Done page was a bare setCurrentIndex(3). It showed
+       the recording page WITHOUT preparing it - blank card, blank counters.
+       That is the screenshot you sent.
+    b) _save indexed self.queue[self.cursor] with no bounds check, so tapping
+       the microphone on that blank page raised IndexError.
+    c) An empty queue made _show_prompt jump silently to Done, so pressing
+       Continue looked like step 4 had been skipped.
+
+    FIX  "Record more" now refills the queue and shows a line; _save declines
+         rather than writing a clip with no reference text; an empty queue is
+         explained and returns you to the form.
+
+--------------------------------------------------------------------------
+ 6. FILLING THE FORM IN CRASHED ON A FRESH MACHINE     [ALSO WINDOWS]
+--------------------------------------------------------------------------
+    setup_prompts.write_prompt_set wrote to data/prompts/ without creating it.
+    On any machine that had never recorded before - i.e. every machine on its
+    first run - that is FileNotFoundError. seed_vocab three lines below already
+    did the mkdir; this did not.
+
+    FIX  Creates the folder first.
+
+--------------------------------------------------------------------------
+ 7. THE FIRST 50 CLIPS CONTAINED NO CONNECTED SPEECH
+--------------------------------------------------------------------------
+    _build_queue concatenated the sets in SETUP_ORDER, so the first 50 clips
+    were 34 letter-anchors and 16 bare commands - not one ordinary sentence.
+    TIER_QUICK trains a model at exactly 50, so the first model most people
+    ever get would have been taught almost entirely on isolated words.
+
+    FIX  The sets are now interleaved in proportion, so any stopping point is
+         balanced. At 50 clips: 13 phonetic sentences, 9 commands, 8 everyday,
+         7 letters, 6 function words, 5 punctuation, 2 personal.
+
+--------------------------------------------------------------------------
+ 8. DIALOG TEXT WAS INVISIBLE ON macOS                 (macOS only)
+--------------------------------------------------------------------------
+    STYLESHEET's first rule sets a text colour and NO background. That is fine
+    for the main window, which has a #Root child painting behind it - but a Qt
+    stylesheet cascades into any dialog parented to the window, and QMessageBox
+    has no such child. So dialogs inherited near-white ink and stayed
+    transparent, letting macOS paint its light alert surface behind the text.
+    White on white. Selecting a word made it readable because the selection
+    highlight supplied the background the dialog never painted.
+
+    FIX  QDialog, QMessageBox, QInputDialog and QProgressDialog now paint their
+         own background, so contrast is Kara's to guarantee rather than a
+         coincidence of the platform.
+    ALSO SayHelpDialog ("What can I say?") had the identical fault - it copies
+         the window stylesheet without the #Root that makes it work. You had
+         not hit it yet.
+    VERIFIED  Contrast measured in all four themes: dusk 14.4:1, dark 12.3:1,
+              brown 12.1:1, daylight 17.6:1. Minimum readable is 4.5:1.
+
+--------------------------------------------------------------------------
+ 9. READING ALOUD SOUNDED LIKE A BASS RUMBLE           (macOS only)
+--------------------------------------------------------------------------
+    speak_tracked - the read-aloud path - always used PortAudio, on every
+    platform, with no macOS branch. PortAudio's CoreAudio backend DOES NOT
+    RESAMPLE: it was handed 22 kHz speech for speakers running at 48 kHz.
+
+    It explains why only some audio was wrong. speak() with no device already
+    used `say`, which is CoreAudio and always sounded right; read-aloud never
+    took that path.
+
+    FIX  macOS playback now goes through afplay (CoreAudio), the same route as
+         `say`. Stopping mid-sentence still works - it kills the player and
+         reports how far it got.
+    [UNVERIFIED BY EAR]  My acoustic loopback moved the right way (0.052
+         against `say`'s 0.057, up from 0.045) but the run-to-run spread is too
+         wide to call it proven. PLEASE CONFIRM BY LISTENING.
+
+--------------------------------------------------------------------------
+10. RESTORE BROUGHT PAGES BACK BUT LEFT THEM INVISIBLE
+--------------------------------------------------------------------------
+    library/index.json is what the app reads to list your writing, and it is a
+    normal file in the backup payload. On any machine that already had pages it
+    "exists locally and differs", so restore left it alone while restoring the
+    .txt files beside it. Your writing came back to disk and stayed invisible
+    in Kara - which looks exactly like the restore having failed.
+
+    FIX  After a restore, the page index is rebuilt from the files actually
+         present. library.rebuild_index keeps titles already known, so restored
+         pages AND local ones both survive instead of one index winning. The
+         now-meaningless "index.json differs" error is no longer reported.
+    VERIFIED  Deleted page returns, a page written after the backup is kept, a
+              custom title on an existing page survives, text intact.
+
+--------------------------------------------------------------------------
+11. "MEASURE THIS MACHINE" TOOK LONGER THAN ITS OWN TIMEOUT
+--------------------------------------------------------------------------
+    Once the entry point was restored it still failed: it timed ALL SIX model
+    sizes, each needing its own fp32 Whisper weights (medium alone is ~3 GB)
+    plus real LoRA steps. The caller allows 600 seconds.
+
+    FIX  Times ONE size - capped at 'small', never larger - and scales the rest
+         by the SEC_PER_STEP_3060 ratios. 33 SECONDS instead of a timeout.
+    ALSO Only the timed row used to be saved, so later views mixed this
+         machine's numbers with an RTX 3060's and showed medium as FASTER than
+         small. The scaled rows are saved too.
+    MEASURED ON YOUR M5   small 4.73 s/step, medium ~13 s/step (scaled).
+
+--------------------------------------------------------------------------
+12. BIG MODELS WERE REFUSED FOR THE WRONG REASON
+--------------------------------------------------------------------------
+    Large and Large Turbo said "needs an NVIDIA GPU with 10 GB+" on a Mac with
+    25.8 GB that can in fact train them, slowly. That reads as a hardware
+    verdict rather than the speed trade-off it actually is.
+
+    FIX  Where there is no CUDA the decision falls through to MEMORY, which is
+         the real constraint and was already in the table as min_ram_gb. Your
+         machine now offers Large Turbo (~6.2 h at 250 clips) and honestly
+         refuses Large with "needs 32 GB of memory (this computer has 25.8)".
+
+--------------------------------------------------------------------------
+13. AN UPDATE WOULD HAVE INSTALLED THE WRONG PLATFORM'S BUILD
+--------------------------------------------------------------------------
+    update.json had a single "url" pointing at the Windows zip. A Mac reading
+    it would have replaced its own src/ with ctypes.windll code and called it
+    an upgrade.
+
+    FIX  The feed is per-platform now, and a Mac REFUSES any legacy single-url
+         feed outright (every such feed predates the Mac build, so it is a
+         Windows feed by definition).
+    IMPORTANT  The feed keeps its TOP-LEVEL version and url so the v1.53
+         updater already on people's machines still reads it. I tested the
+         shipped v1.53 updates.py against the new feed: without that, every
+         existing Windows user would have lost their update check entirely.
+
+--------------------------------------------------------------------------
+14. TRAINING WOULD HAVE DIED BEFORE THE FIRST STEP     (non-NVIDIA)
+--------------------------------------------------------------------------
+    finetune.py hardcoded fp16=not bf16. Mixed precision needs a CUDA
+    GradScaler, so on any machine without CUDA training aborted immediately.
+
+    FIX  fp32 off CUDA, with a line saying so. Slower and correct.
+
+--------------------------------------------------------------------------
+15. THE MODEL DOWNLOAD COULD HANG FOREVER              [ALSO WINDOWS]
+--------------------------------------------------------------------------
+    Observed on a real run: snapshot_download stopped dead at 768 MB of 1.5 GB
+    with the process alive and no error, because nothing bounded the read. This
+    is the step setup calls "not optional".
+
+    FIX  Sets HF_HUB_DOWNLOAD_TIMEOUT and reports a failure that says it can be
+         re-run and will carry on from where it stopped.
+
+--------------------------------------------------------------------------
+16. KARA WAS NOT AN APPLICATION                        (macOS only)
+--------------------------------------------------------------------------
+    A .command file is a shell script. macOS never indexes scripts as
+    applications, so Kara was absent from Spotlight, had no Dock identity, and
+    every permission prompt was attributed to Terminal.
+
+    FIX  A real Kara.app bundle (id com.kara.voicetotext), registered with
+         Launch Services by setup.sh on every run. Prompts now name Kara.
+    VERIFIED  mdls reports "(null)" before registration and "Application"
+              after. Unzipping alone is NOT enough - hence registering on every
+              setup run.
+    ALSO The bundle is ad-hoc signed. That does NOT remove the Gatekeeper
+         warning (verified - spctl still rejects it) but it gives Kara a stable
+         code identity, so Microphone and Accessibility grants survive updates
+         and moves rather than being silently forgotten.
+
+--------------------------------------------------------------------------
+17. A WINDOWS REGRESSION I INTRODUCED, AND FIXED       [ALSO WINDOWS]
+--------------------------------------------------------------------------
+    Splitting out the platform layer, I left oswin.tts_speak_direct and
+    tts_to_wav as stubs returning False, assuming voices.py owned all Windows
+    speech. It does not: editing.speak() falls back to the platform layer
+    whenever voices.catalogue() is empty, which on Windows is any machine
+    without Piper voices installed. Kara would simply not speak, with no error.
+
+    FIX  Restored to the PowerShell SAPI calls that lived in editing.py before
+         the split. Also limited the new playback resampling to macOS only -
+         Windows playback was working, and changing a platform that has no bug
+         is how a fix becomes a regression.
+    [UNVERIFIED]  Reasoned and restored from the original code, but NOT run on
+                  Windows. Please test on the VM.
+
+--------------------------------------------------------------------------
+18. SMALLER macOS FIXES
+--------------------------------------------------------------------------
+    * Default voice was "Albert", one of Apple's novelty voices - Apple ships
+      Bahh, Boing, Jester and friends in the same list as the real ones, sorted
+      alphabetically. For an app that reads a disabled user's own writing back
+      that is not acceptable. Novelty voices are filtered; default is Samantha.
+    * Fonts: Qt on macOS cannot address "SF Pro" or "New York" by name. Naming
+      a font Qt cannot see costs an alias rescan on every miss and then falls
+      to a default. Now uses Charter/Palatino, which are present, and which are
+      the right serif substitutes for the Sitka the design was built on.
+    * Deleting a page said "Windows Recycle Bin" on a Mac; now uses the Trash
+      and says so.
+    * "Measure this machine" reported the CPU as "arm". Now reports "Apple M5".
+    * Single instance: a second launch could not find the first, because an
+      unbundled PySide6 process reports as "python", not "Kara" - so a second
+      double-click did nothing at all, silently. Now matches by process id.
+    * The instance lock file was opened with mode "w", which truncates BEFORE
+      the lock is attempted, so a losing copy wiped the winner's pid.
+    * Paste key: error messages told Mac users to press "Ctrl and V".
+
+
+================================================================================
+  PART 2 - NEEDS YOU
+================================================================================
+
+ 1. TEST THE WINDOWS BUILD ON YOUR VM                       *** first ***
+    The source is now one cross-platform tree. Everything marked [ALSO WINDOWS]
+    above is a real Windows fix that I could not run. Priority order:
+      a) Start training actually trains (items 1 and 2)
+      b) The setup wizard offers sentences (items 3, 5, 6)
+      c) Spelling mode starts (item 4)
+      d) Kara still speaks with no Piper voices installed (item 17)
+      e) "Measure this machine" returns a report (items 1 and 11)
+    update.json still PINS WINDOWS TO 1.53, so no existing Windows user is
+    offered any of this until you have tested it and we bump that entry.
+
+ 2. REVIEW THE PROMPT SET CONTENT
+    The mechanics are verified; the judgement is yours. Specifically:
+      * The anchor alphabet (apple/bottle/candle/...). Collision-free at the
+        0.75 fuzzy cutoff, but if your users already know an alphabet, use it.
+      * setup_core weights /r/ heaviest - 18 of 64 lines across four levels.
+        That follows practice.LEVELS and the misrecognitions preserved in
+        editing.COMMANDS ("ledo" for redo, "tend" for send, "chart over" for
+        start over), which name r-, s- and cluster failures. If the real
+        difficulty profile differs, say so and I will rebalance.
+      * Register: I assumed Indian English from lexicon.EXTRA_WORDS (lakh,
+        crore, tiffin, chai). Say if that is wrong.
+
+ 3. CONFIRM THE VOICE FIX BY EAR
+    Item 9. Thirty seconds on read-aloud. I could not prove it acoustically.
+
+ 4. GRANT ACCESSIBILITY ONCE AND TEST "SEND"
+    System Settings > Privacy & Security > Accessibility. The refused path is
+    well tested (text reaches the clipboard BEFORE the permission check, so it
+    is always recoverable with Cmd+V) but the GRANTED path is not - I will not
+    grant a system permission on your behalf.
+
+ 5. DECIDE ON CODE SIGNING - $99/year
+    Apple Developer Program. Removes the "unidentified developer" warning.
+    scripts/NOTARIZING.md has the three steps and the one thing I could not
+    test without a paid account. make_app.sh already detects a Developer ID and
+    switches to it automatically. Doing nothing is a reasonable choice.
+
+ 6. REMOVE package.py --strip FROM YOUR BUILD
+    Item 1 will recur otherwise, and it is invisible when it does.
+
+ 7. FOR INFORMATION - not bugs, no action needed
+    * MPS (the M5 GPU) CANNOT train this stack. torch 2.5.1 + transformers
+      5.13 + PEFT on Whisper fails with "view size is not compatible with input
+      tensor's size and stride", with and without gradient checkpointing. Mac
+      training is CPU-only. Tested, not assumed.
+    * Large-v3 needs 32 GB; your M5 has 25.8 GB. Large Turbo is available.
+    * Python 3.12 exactly on Mac - soxr and torch 2.5.1 publish no cp313
+      macOS wheels, so a 3.13 venv tries to compile from source and fails.
+
+
+================================================================================
+  PART 3 - WHAT WAS TESTED
+================================================================================
+
+  Automated, all passing:
+    17  core logic      command parsing (every COMMANDS phrase round-trips to
+                        its action), punctuation, spelling anchors, editing
+                        buffer, undo, practice scoring and levels, error codes
+    27  state + files   config round-trip, profile create/list/describe/rename,
+                        library create/read/save/rename/delete/rebuild,
+                        utterance save + correction, analytics, model store,
+                        proofing (fallback spellchecker), profile export AND
+                        re-import
+    22  the rest        backup -> delete -> restore round-trip, backup
+                        fingerprinting, update version logic and feed parsing,
+                        adapt queue, voices catalogue, audio device
+                        enumeration, silence detection, platform contract
+     9  dialogs         every dialog built AND rendered offscreen, checking it
+                        is not blank
+     6  settings pages  each navigated to and rendered
+    13  CLI entries     every src/*.py --help
+     4  themes          main window rendered in dusk, dark, brown, daylight
+
+  Done by hand on this machine:
+    * Full acoustic loopback - spoken aloud, captured by the microphone,
+      transcribed correctly by Kara's own engine
+    * Speech recognition: 4.2% WER, 2.9 s per utterance on the medium model
+    * Clean install from the release zip, from scratch, including the Python
+      bootstrap - passed every check in setup.sh
+    * Spotlight registration proven before AND after (null -> Application)
+    * Signature survival through zip and ditto round-trips
+    * The shipped v1.53 updater read against the new feed
+
+  NOT tested, and not claimed:
+    * Anything on Windows
+    * The Accessibility-granted send path
+    * Notarisation with a real Developer ID
+    * A full training run to completion (hours; the path is verified to start
+      correctly and report honestly)
+
+================================================================================
+  END
+================================================================================

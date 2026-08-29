@@ -1,15 +1,15 @@
 {
   "version": "1.53",
   "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.53.zip",
-  "notes": "Kara now runs on macOS. Windows is unchanged in this release.",
+  "notes": "Kara runs on macOS. Windows is unchanged in this release and is still on 1.53.",
   "platforms": {
     "windows": {
       "version": "1.53",
       "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.53.zip"
     },
     "mac": {
-      "version": "1.54",
-      "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.54-macos.zip"
+      "version": "1.55",
+      "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.55-macos.zip"
     }
   }
 }
