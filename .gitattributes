@@ -1,7 +1,2 @@
 # Auto detect text files and perform LF normalization
 * text=auto
-
-# The triage report is read in Notepad on Windows. Keep its CRLF line
-# endings byte-for-byte instead of normalising them to LF, or a raw download
-# opens as one continuous line in older Notepad.
-KARA-TRIAGE-REPORT.txt -text
