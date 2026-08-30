@@ -5,12 +5,12 @@ on your own computer.
 
 | | Download |
 |---|---|
-| Windows 10 or 11 | `Kara-v1.58-windows.zip` |
+| Windows 10 or 11 | `Kara-v1.59-windows.zip` |
 | macOS 12 or newer | `Kara-v1.57-macos.zip` |
 
 ## Installing on Windows
 
-**1. Extract the zip first.** Right-click `Kara-v1.58-windows.zip`, choose
+**1. Extract the zip first.** Right-click `Kara-v1.59-windows.zip`, choose
 *Extract All…*, then *Extract*. This is not optional — if you open Kara from
 inside the zip, Windows unpacks only that one file and nothing else works.
 Kara will tell you if this happens.

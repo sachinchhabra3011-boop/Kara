@@ -1,16 +1,19 @@
 {
   "_comment": [
-    "One section per platform. Kara reads the one for the machine it is running on, and refuses a download that identifies as the other platform even if this file points at the wrong one.",
-    "DO NOT add a top-level version/url. Builds older than 1.58 read a flat manifest and have no platform check, so a flat entry would hand them whichever operating system's zip it named."
+    "Kara reads the entry under platforms for the machine it is running on.",
+    "Keys are 'windows' and 'mac' -- the shape the Mac build has always read.",
+    "DO NOT add a top-level url alongside this block: clients that check the",
+    "top level first would take it, whichever platform's zip it named."
   ],
-  "windows": {
-    "version": "1.58",
-    "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.58-windows.zip",
-    "notes": "Self-updating is back on, and now knows which platform it is."
+  "platforms": {
+    "windows": {
+      "version": "1.59",
+      "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.59-windows.zip"
+    },
+    "mac": {
+      "version": "1.57",
+      "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.57-macos.zip"
+    }
   },
-  "macos": {
-    "version": "1.57",
-    "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.57-macos.zip",
-    "notes": "Current Mac build."
-  }
+  "notes": "Self-updating knows which platform it is running on."
 }
