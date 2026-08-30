@@ -11,8 +11,8 @@
       "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.60-windows.zip"
     },
     "mac": {
-      "version": "1.57",
-      "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.57-macos.zip"
+      "version": "1.60",
+      "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.60-macos.zip"
     }
   },
   "notes": "Updates now bring across scripts, assets and the launcher too, not just the program files."

@@ -6,7 +6,7 @@ on your own computer.
 | | Download |
 |---|---|
 | Windows 10 or 11 | `Kara-v1.60-windows.zip` |
-| macOS 12 or newer | `Kara-v1.57-macos.zip` |
+| macOS 12 or newer | `Kara-v1.60-macos.zip` |
 
 ## Installing on Windows
 
@@ -28,7 +28,7 @@ Notepad instead of running them.
 
 ## Installing on a Mac
 
-**1. Unzip it.** Double-click `Kara-v1.57-macos.zip`.
+**1. Unzip it.** Double-click `Kara-v1.60-macos.zip`.
 
 **2. Move the folder somewhere it can stay** — Applications, or your home
 folder. Kara keeps your recordings and trained voice inside it, so it should not
