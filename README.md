@@ -3,6 +3,8 @@
 Kara turns speech into writing, personalised to one speaker, and runs entirely
 on your own computer.
 
+Download the latest release: **[github.com/sachinchhabra3011-boop/Kara/releases/latest](https://github.com/sachinchhabra3011-boop/Kara/releases/latest)**
+
 | | Download |
 |---|---|
 | Windows 10 or 11 | `Kara-v1.60-windows.zip` |

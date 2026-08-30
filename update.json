@@ -3,16 +3,19 @@
     "Kara reads the entry under platforms for the machine it is running on.",
     "Keys are 'windows' and 'mac' -- the shape the Mac build has always read.",
     "DO NOT add a top-level url alongside this block: clients that check the",
-    "top level first would take it, whichever platform's zip it named."
+    "top level first would take it, whichever platform's zip it named.",
+    "The urls point at release assets, so the zips are not in the repo tree and",
+    "do not accumulate in its history. Keep 'windows'/'macos' in the FILENAMES:",
+    "a releases feed is matched on the asset name."
   ],
   "platforms": {
     "windows": {
       "version": "1.60",
-      "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.60-windows.zip"
+      "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.60/Kara-v1.60-windows.zip"
     },
     "mac": {
       "version": "1.60",
-      "url": "https://github.com/sachinchhabra3011-boop/Kara/raw/main/Kara-v1.60-macos.zip"
+      "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.60/Kara-v1.60-macos.zip"
     }
   },
   "notes": "Updates now bring across scripts, assets and the launcher too, not just the program files."
