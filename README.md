@@ -5,12 +5,12 @@ on your own computer.
 
 | | Download |
 |---|---|
-| Windows 10 or 11 | `Kara-v1.57-windows.zip` |
+| Windows 10 or 11 | `Kara-v1.58-windows.zip` |
 | macOS 12 or newer | `Kara-v1.57-macos.zip` |
 
 ## Installing on Windows
 
-**1. Extract the zip first.** Right-click `Kara-v1.57-windows.zip`, choose
+**1. Extract the zip first.** Right-click `Kara-v1.58-windows.zip`, choose
 *Extract All…*, then *Extract*. This is not optional — if you open Kara from
 inside the zip, Windows unpacks only that one file and nothing else works.
 Kara will tell you if this happens.
@@ -72,6 +72,17 @@ machine and training runs there too.
 On the voice Kara was built for, personalising it cut the word error rate from
 about 35% to roughly 4.5% on average. What you get depends on your own voice and
 how much you record, and Kara only ever shows you figures measured for you.
+
+## Updating
+
+Kara checks for updates itself and offers them when one is published. You
+do not need to download it again — accept the offer and it replaces its own
+program files, keeping the previous version so it can go back if anything is
+wrong. Your recordings, pages and trained voice model are never touched.
+
+It only ever installs the build for the computer it is running on, and
+checks that for itself before changing anything. The check sends nothing
+about you and can be switched off in Settings.
 
 ## Moving to another computer
 
