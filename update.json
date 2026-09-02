@@ -6,17 +6,20 @@
     "top level first would take it, whichever platform's zip it named.",
     "The urls point at release assets, so the zips are not in the repo tree and",
     "do not accumulate in its history. Keep 'windows'/'macos' in the FILENAMES:",
-    "a releases feed is matched on the asset name."
+    "a releases feed is matched on the asset name.",
+    "MAC STAYS AT 1.60 ON PURPOSE. 1.61 is a Windows-only build; there is no",
+    "Mac machine to build on. Bumping the mac version to 1.61 would point every",
+    "Mac install at an asset that does not exist."
   ],
   "platforms": {
     "windows": {
-      "version": "1.60",
-      "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.60/Kara-v1.60-windows.zip"
+      "version": "1.61",
+      "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.61/Kara-v1.61-windows.zip"
     },
     "mac": {
       "version": "1.60",
       "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.60/Kara-v1.60-macos.zip"
     }
   },
-  "notes": "Updates now bring across scripts, assets and the launcher too, not just the program files."
+  "notes": "Fixes a Windows install that could not finish setting up. Setup is now one file, and it says what to try if something stops."
 }
