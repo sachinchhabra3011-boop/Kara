@@ -7,9 +7,9 @@
     "The urls point at release assets, so the zips are not in the repo tree and",
     "do not accumulate in its history. Keep 'windows'/'macos' in the FILENAMES:",
     "a releases feed is matched on the asset name.",
-    "MAC STAYS AT 1.60 ON PURPOSE. 1.61 and 1.62 are Windows-only builds; there is no",
-    "Mac machine to build on. Bumping the mac version past 1.60 would point every",
-    "Mac install at an asset that does not exist."
+    "The Mac zip is built on Windows: its Kara.app is carried byte-for-byte from",
+    "the last Mac-built release so its signature, and the permissions macOS files",
+    "under it, survive. Only bump 'mac' to a version whose macos asset exists."
   ],
   "platforms": {
     "windows": {
@@ -17,9 +17,9 @@
       "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.62/Kara-v1.62-windows.zip"
     },
     "mac": {
-      "version": "1.60",
-      "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.60/Kara-v1.60-macos.zip"
+      "version": "1.62",
+      "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.62/Kara-v1.62-macos.zip"
     }
   },
-  "notes": "Kara now asks \"Did you mean...?\" when it hears a word slightly wrong while editing - press Space to accept. The space bar works again, arrow keys switch modes, and quiet speech is no longer dropped without a word."
+  "notes": "Kara now asks \"Did you mean...?\" when it hears a word slightly wrong while editing - press Space to accept. The space bar works again, arrow keys switch modes, and quiet speech is no longer dropped without a word. Macs are back in step with Windows."
 }
