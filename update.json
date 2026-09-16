@@ -1,16 +1,20 @@
 {
   "_comment": [
-    "Kara reads the entry under platforms for the machine it is running on.",
-    "Keys are 'windows' and 'mac' -- the shape the Mac build has always read.",
-    "DO NOT add a top-level url alongside this block: clients that check the",
-    "top level first would take it, whichever platform's zip it named.",
-    "The urls point at release assets, so the zips are not in the repo tree and",
-    "do not accumulate in its history. Keep 'windows'/'macos' in the FILENAMES:",
+    "Kara 1.59 and newer, on both platforms, read the entry under platforms for",
+    "the machine they run on. Keys are 'windows' and 'mac'.",
+    "THE TOP-LEVEL version AND url ARE FOR WINDOWS 1.58 AND OLDER, which only read",
+    "the top level. Without them those installs report 'the update source did not",
+    "name a version and a zip' and can never update. They MUST name the WINDOWS",
+    "zip and match platforms.windows: every Mac build (1.54 onward) reads",
+    "platforms first, so it never sees these. Checked against each version's code.",
+    "The urls point at release assets. Keep 'windows'/'macos' in the FILENAMES:",
     "a releases feed is matched on the asset name.",
     "The Mac zip is built on Windows: its Kara.app is carried byte-for-byte from",
     "the last Mac-built release so its signature, and the permissions macOS files",
     "under it, survive. Only bump 'mac' to a version whose macos asset exists."
   ],
+  "version": "1.62",
+  "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.62/Kara-v1.62-windows.zip",
   "platforms": {
     "windows": {
       "version": "1.62",
