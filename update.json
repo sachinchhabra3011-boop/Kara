@@ -13,17 +13,17 @@
     "the last Mac-built release so its signature, and the permissions macOS files",
     "under it, survive. Only bump 'mac' to a version whose macos asset exists."
   ],
-  "version": "1.62",
-  "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.62/Kara-v1.62-windows.zip",
+  "version": "1.63",
+  "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.63/Kara-v1.63-windows.zip",
   "platforms": {
     "windows": {
-      "version": "1.62",
-      "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.62/Kara-v1.62-windows.zip"
+      "version": "1.63",
+      "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.63/Kara-v1.63-windows.zip"
     },
     "mac": {
-      "version": "1.62",
-      "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.62/Kara-v1.62-macos.zip"
+      "version": "1.63",
+      "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.63/Kara-v1.63-macos.zip"
     }
   },
-  "notes": "Kara now asks \"Did you mean...?\" when it hears a word slightly wrong while editing - press Space to accept. The space bar works again, arrow keys switch modes, and quiet speech is no longer dropped without a word. Macs are back in step with Windows."
+  "notes": "Kara now listens for the names in your profile, so it spells them right more often (on by default; Settings > Writing to turn it off). Opening Kara twice no longer shows a white window, and the grey unsure marks appear even when recordings aren't kept."
 }
