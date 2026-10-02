@@ -7,8 +7,8 @@ on your own computer. Nothing is uploaded and there is no account.
 
 | | File | Version |
 |---|---|---|
-| **Windows 10 or 11** | **[Kara-v1.62-windows.zip](https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.62/Kara-v1.62-windows.zip)** | 1.62 |
-| **macOS 12 or newer** | **[Kara-v1.62-macos.zip](https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.62/Kara-v1.62-macos.zip)** | 1.62 |
+| **Windows 10 or 11** | **[Kara-v1.63-windows.zip](https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.63/Kara-v1.63-windows.zip)** | 1.63 |
+| **macOS 12 or newer** | **[Kara-v1.63-macos.zip](https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.63/Kara-v1.63-macos.zip)** | 1.63 |
 
 > **Do not download "Source code (zip)".** GitHub adds those two entries to every
 > release automatically and they are not Kara — they contain this page and
