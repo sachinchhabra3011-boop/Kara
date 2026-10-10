@@ -13,17 +13,17 @@
     "the last Mac-built release so its signature, and the permissions macOS files",
     "under it, survive. Only bump 'mac' to a version whose macos asset exists."
   ],
-  "version": "1.63",
-  "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.63/Kara-v1.63-windows.zip",
+  "version": "1.64",
+  "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.64/Kara-v1.64-windows.zip",
   "platforms": {
     "windows": {
-      "version": "1.63",
-      "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.63/Kara-v1.63-windows.zip"
+      "version": "1.64",
+      "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.64/Kara-v1.64-windows.zip"
     },
     "mac": {
-      "version": "1.63",
-      "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.63/Kara-v1.63-macos.zip"
+      "version": "1.64",
+      "url": "https://github.com/sachinchhabra3011-boop/Kara/releases/download/v1.64/Kara-v1.64-macos.zip"
     }
   },
-  "notes": "Kara now listens for the names in your profile, so it spells them right more often (on by default; Settings > Writing to turn it off). Opening Kara twice no longer shows a white window, and the grey unsure marks appear even when recordings aren't kept."
+  "notes": "A locked, encrypted folder in the library; pin, group and combine pages; Kara can train itself as you record; fewer mistakes on long dictations; and a new look. Effects can be switched off in Settings > Look & sound."
 }
